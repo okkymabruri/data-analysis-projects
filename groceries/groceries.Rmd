@@ -1,0 +1,60 @@
+---
+title: "groceries association rules"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(stringr)
+library(arules)
+library(arulesViz)
+library(mvinfluence)
+library(MASS)
+library(caret)
+```
+
+```{r}
+groceries_data <- read.csv("./data/groceries.csv")
+
+str(groceries_data)
+```
+
+```{r}
+groceries <- as(groceries_data, "transactions")
+
+itemFrequencyPlot(groceries, topN=10)
+```
+
+```{r}
+grocires_apriori <- apriori(groceries, parameter = list(supp=0.03, conf=0.4, minlen=2, maxlen=4))
+```
+
+```{r}
+grocires_apriori
+```
+
+```{r}
+inspect(grocires_apriori)
+```
+
+```{r}
+write(grocires_apriori,
+      file = "./data/rules.csv",
+      sep = ",",
+      quote = TRUE,
+      row.names = FALSE)
+```
+
+```{r}
+plot(grocires_apriori, method="graph", control=list())
+```
+
+```{r}
+plot(grocires_apriori)
+```
+
+```{r}
+plot(grocires_apriori, method="grouped", control=list())
+```
+
